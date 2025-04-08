@@ -1,0 +1,33 @@
+{
+    "schemaVersion": "1.7.1",
+    "resources": {
+        "dbus": {
+            "requiredMethods": [
+                "com.axis.Graphics2.*",
+                "com.axis.Overlay2.*"
+            ]
+        }
+    },
+    "acapPackageConf": {
+        "setup": {
+            "friendlyName": "Enixma Analytic",
+            "appName": "enixma_analytic",
+            "vendor": "Enixma Global",
+            "embeddedSdkVersion": "3.0",
+            "runOptions": "/usr/local/packages/enixma_analytic/model/day_model.tflite /usr/local/packages/enixma_analytic/model/night_model.tflite 300 300 80 1024 768 15 /usr/local/packages/enixma_analytic/label/labels.txt -c axis-a8-dlpu-tflite",
+            "vendorUrl": "https://www.axis.com",
+            "runMode": "never",
+            "version": "1.0.0"
+        },
+        "configuration": {
+            "settingPage": "index.html",
+            "httpConfig": [
+                {
+                    "access": "viewer",
+                    "name": "parameters.cgi",
+                    "type": "fastCgi"
+                }
+            ]
+        }
+    }
+}

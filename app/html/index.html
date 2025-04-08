@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enixma Analytic</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./font-awesome-6/css/all.css">
+
+    <script src="./scripts/echarts.min.js"></script>
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div id="load" class="myLoad">
+        <div class="load-center">
+            <img class="load-logo" src="./images/Enixma.png" alt="Enixma Logo" width="200" height="60">
+            <div class="loader">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app" class="myApp" hidden>
+        <div class="grid-container">
+            <!-- Header Section -->
+            <header class="grid header">
+                <img class="logo" src="./images/Enixma.png" alt="Logo">
+                <h1 class="grid-name">ENIXMA_ANALYTICS</h1>
+            </header>
+
+            <!-- Main Content Section -->
+            <main class="grid content">
+                <div class="video-border">
+                    <div class="video-background">
+                        <img id="video-content" src="./images/background.png" alt="Video Feed">
+                        <canvas id="video-overlay" width="1024" height="768" hidden></canvas>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Sidebar Section -->
+            <aside class="grid sidebar">
+                <nav class="tabs">
+                    <div class="tab-item active">
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="circuit circuit-h"></div>
+                        <div class="circuit circuit-v"></div>
+                        <!-- <i class="tab-icon fas fa-truck"></i> -->
+                        COUNTING
+                    </div>
+                    <div class="tab-item">
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="circuit circuit-h"></div>
+                        <div class="circuit circuit-v"></div>
+                        <!-- <i class="tab-icon fas fa-truck-fast"></i> -->
+                        SPEED
+                    </div>
+                    <div class="tab-item">
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="circuit circuit-h"></div>
+                        <div class="circuit circuit-v"></div>
+                        <!-- <i class="tab-icon fas fa-car-burst"></i> -->
+                        INCIDENTS
+                    </div>
+                    <div class="tab-item">
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="corner"></div>
+                        <div class="circuit circuit-h"></div>
+                        <div class="circuit circuit-v"></div>
+                        <!-- <i class="tab-icon fas fa-cog"></i> -->
+                        SETTINGS
+                    </div>
+                </nav>
+
+                <!-- Tab Panels -->
+                <div class="tab-content">
+                    <!-- Counting Panel -->
+                    <div id="counting-panel" class="tab-panel active" role="tabpanel">
+                        <div class="sidebar-content">
+                            <div id="total-chart" style="width: 440px; height: 330px;"></div>
+                            <div id="total-daily-chart" style="width: 440px; height: 450px;"></div>
+                            <div id="total-weekly-chart" style="width: 440px; height: 450px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Speed Panel -->
+                    <div id="speed-panel" class="tab-panel" role="tabpanel" hidden>
+                        <div class="sidebar-content">
+                            <div id="speed-chart" style="width: 440px; height: 330px;"></div>
+                            <div id="speed-daily-chart" style="width: 440px; height: 450px;"></div>
+                            <div id="speed-weekly-chart" style="width: 440px; height: 450px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Incidents Panel -->
+                    <div id="incidents-panel" class="tab-panel" role="tabpanel" hidden>
+                        <div id="sidebarContent" class="sidebar-content"></div>
+                    </div>
+
+                    <!-- Settings Panel -->
+                    <div id="settings-panel" class="tab-panel" role="tabpanel" hidden>
+                        <div class="setting-tabs">
+                            <div class="setting-tab">
+                                <label for="setting-tab-1" class="setting-label">Counting</label>
+                                <input id="setting-tab-1" name="setting-tabs-two" type="radio" checked="checked">
+                                <div class="setting-content">
+                                    <div class="sidebar-content">
+                                        <!-- Region of Interest -->
+                                        <div class="cyber-panel">
+                                            <div class="header-panel">
+                                                REGION_OF_INTEREST
+                                                <span style="display:flex;">
+                                                    <div id="roi1-status-dot" class="status-dot" hidden></div>
+                                                    <div id="roi2-status-dot" class="status-dot"
+                                                        style="margin-left: 20px;" hidden></div>
+                                                </span>
+                                            </div>
+                                            <div class="content-panel">
+                                                <div class="topic-panel">
+                                                    <h4>Perspective</h4>
+                                                    <p>Go to Settings to calibrate.</p>
+                                                </div>
+                                                <div id="area1" class="control-panel">
+                                                    <p id="area1-caption">Include area 1</p>
+                                                    <span>
+                                                        <button class="control-button"><i
+                                                                id="reset-area1-button"></i></button>
+                                                        <button class="control-button"><i id="control-area1-button"
+                                                                class="fa-plus fa-xl fa-solid"></i></button>
+                                                    </span>
+                                                </div>
+                                                <div id="area2" class="control-panel" style="display:none;">
+                                                    <p id="area2-caption">Include area 2</p>
+                                                    <span>
+                                                        <button class="control-button"><i
+                                                                id="reset-area2-button"></i></button>
+                                                        <button class="control-button"><i id="control-area2-button"
+                                                                class="fa-plus fa-xl fa-solid"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Crossline Counting -->
+                                        <div class="cyber-panel">
+                                            <div class="header-panel">
+                                                CROSSLINE_COUNTING
+                                                <span style="display:flex;">
+                                                    <div id="crossline1-status-dot" class="status-dot" hidden></div>
+                                                    <div id="crossline2-status-dot" class="status-dot"
+                                                        style="margin-left: 20px;" hidden></div>
+                                                </span>
+                                            </div>
+                                            <div class="content-panel">
+                                                <div class="topic-panel">
+                                                    <h4>Perspective</h4>
+                                                    <p>Go to Settings to calibrate.</p>
+                                                </div>
+                                                <div id="crossline1" class="control-panel">
+                                                    <p id="crossline1-caption">Include crossline 1</p>
+                                                    <span>
+                                                        <button class="control-button"><i
+                                                                id="alternate-crossline1-button"></i></button>
+                                                        <button class="control-button"><i
+                                                                id="reset-crossline1-button"></i></button>
+                                                        <button class="control-button"><i id="control-crossline1-button"
+                                                                class="fa-plus fa-xl fa-solid"></i></button>
+                                                    </span>
+                                                </div>
+                                                <div id="lane1-panel" style="display:none;">
+                                                    <p class="tuning-topic">Number of road lanes of crossline 1</p>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="lane1" type="range" min="1" max="4" value="1"
+                                                                step="1" />
+                                                            <input id="lane1" type="text" value="1" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="crossline2" class="control-panel" style="display:none;">
+                                                    <p id="crossline2-caption">Include crossline 2</p>
+                                                    <span>
+                                                        <button class="control-button"><i
+                                                                id="alternate-crossline2-button"></i></button>
+                                                        <button class="control-button"><i
+                                                                id="reset-crossline2-button"></i></button>
+                                                        <button class="control-button"><i id="control-crossline2-button"
+                                                                class="fa-plus fa-xl fa-solid"></i></button>
+                                                    </span>
+                                                </div>
+                                                <div id="lane2-panel" style="display:none;">
+                                                    <p class="tuning-topic">Number of road lanes of crossline 2</p>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="lane2" type="range" min="1" max="4" value="1"
+                                                                step="1" />
+                                                            <input id="lane2" type="text" value="1" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Confidence -->
+                                        <div class="cyber-panel">
+                                            <div class="header-panel">
+                                                CONFIDENCE
+                                                <div class="status-dot"></div>
+                                            </div>
+                                            <div class="content-panel">
+                                                <div class="topic-panel">
+                                                    <h4>Adjust the confidence value in percentage.</h4>
+                                                </div>
+                                                <div class="tuning-panel">
+                                                    <div class="tuning">
+                                                        <input id="confidence" type="range" min="0" max="100" value="50"
+                                                            step="1" />
+                                                        <input id="confidence" type="text" value="50" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Pixel per meter -->
+                                        <div class="cyber-panel">
+                                            <div class="header-panel">
+                                                PIXEL_PER_METER
+                                                <div class="status-dot"></div>
+                                            </div>
+                                            <div class="content-panel">
+                                                <div class="topic-panel">
+                                                    <h4>Adjust the pixel per meter value.</h4>
+                                                </div>
+                                                <div class="tuning-panel">
+                                                    <div class="tuning">
+                                                        <input id="pixel-per-meter" type="range" min="0" max="100"
+                                                            value="50" step="1" />
+                                                        <input id="pixel-per-meter" type="text" value="50" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Passenger Car Unit -->
+                                        <div class="cyber-panel">
+                                            <div class="header-panel">
+                                                PASSENGER_CAR_UNIT
+                                                <div id="pcu-status-dot" class="status-dot" hidden></div>
+                                            </div>
+                                            <div class="content-panel">
+                                                <div class="topic-panel">
+                                                    <h4>Enables passenger car unit functions.</h4>
+                                                    <div class="control-toggle">
+                                                        <input type="checkbox" id="pcu-toggly">
+                                                        <label for="pcu-toggly" class="toggly-label"><i
+                                                                class="toggly-indicator"></i></label>
+                                                    </div>
+                                                </div>
+                                                <div id="pcu" style="margin-top: 10px; display:none;">
+                                                    <!-- Car PCU Value -->
+                                                    <div class="topic-panel">
+                                                        <p>Car PCU Value</p>
+                                                    </div>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="car-pcu" type="range" min="0" max="10" value="1"
+                                                                step="0.05" />
+                                                            <input id="car-pcu" type="text" value="1" />
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Bike PCU Value -->
+                                                    <div class="topic-panel">
+                                                        <p>Bike PCU Value</p>
+                                                    </div>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="bike-pcu" type="range" min="0" max="10"
+                                                                value="0.25" step="0.05" />
+                                                            <input id="bike-pcu" type="text" value="0.25" />
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Truck PCU Value -->
+                                                    <div class="topic-panel">
+                                                        <p>Truck PCU Value</p>
+                                                    </div>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="truck-pcu" type="range" min="0" max="10"
+                                                                value="2.5" step="0.05" />
+                                                            <input id="truck-pcu" type="text" value="2.5" />
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Bus PCU Value -->
+                                                    <div class="topic-panel">
+                                                        <p>Bus PCU Value</p>
+                                                    </div>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="bus-pcu" type="range" min="0" max="10" value="2"
+                                                                step="0.05" />
+                                                            <input id="bus-pcu" type="text" value="2" />
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Taxi PCU Value -->
+                                                    <div class="topic-panel">
+                                                        <p>Taxi PCU Value</p>
+                                                    </div>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="taxi-pcu" type="range" min="0" max="10" value="1"
+                                                                step="0.05" />
+                                                            <input id="taxi-pcu" type="text" value="1" />
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Taxi PCU Value -->
+                                                    <div class="topic-panel">
+                                                        <p>Pickup PCU Value</p>
+                                                    </div>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="pickup-pcu" type="range" min="0" max="10"
+                                                                value="1" step="0.05" />
+                                                            <input id="pickup-pcu" type="text" value="1" />
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Trailer PCU Value -->
+                                                    <div class="topic-panel">
+                                                        <p>Trailer PCU Value</p>
+                                                    </div>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="trailer-pcu" type="range" min="0" max="10"
+                                                                value="2.5" step="0.05" />
+                                                            <input id="trailer-pcu" type="text" value="2.5" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="setting-tab">
+                                <label for="setting-tab-2" class="setting-label">Analytics</label>
+                                <input id="setting-tab-2" name="setting-tabs-two" type="radio">
+                                <div class="setting-content">
+                                    <div class="sidebar-content">
+                                        <!-- Incident detection -->
+                                        <div id="incidents" class="cyber-panel" style="display:none;">
+                                            <div class="header-panel">
+                                                INCIDENTS_DETECTION
+                                                <span style="display:flex;">
+                                                    <div id="area1-incidents-status-dot" class="status-dot" hidden>
+                                                    </div>
+                                                    <div id="area2-incidents-status-dot" class="status-dot"
+                                                        style="margin-left: 20px;" hidden></div>
+                                                </span>
+                                            </div>
+                                            <div class="content-panel">
+                                                <div class="topic-panel">
+                                                    <h4>Enable the function to detect incidents.</h4>
+                                                </div>
+
+                                                <!-- Incident detection in arae 1 -->
+                                                <div id="area1-incidents" class="control-panel" style="display:none;">
+                                                    <p id="area1-incidents-caption">Enable function for area 1
+                                                    </p>
+                                                    <div class="control-toggle">
+                                                        <input type="checkbox" id="area1-incidents-toggly">
+                                                        <label for="area1-incidents-toggly" class="toggly-label"><i
+                                                                class="toggly-indicator"></i></label>
+                                                    </div>
+                                                </div>
+                                                <div id="area1-incidents-tuning" style="display:none;">
+                                                    <p class="tuning-topic">Adjust detection time in seconds.</p>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="incidents1" type="range" min="0" max="60"
+                                                                value="30" step="1" />
+                                                            <input id="incidents1" type="text" value="30" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="tuning-topic">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div class="control-toggle">
+                                                                <input type="checkbox" id="area1-accident-toggly"
+                                                                    checked>
+                                                                <label for="area1-accident-toggly"
+                                                                    class="toggly-label"><i
+                                                                        class="toggly-indicator"></i></label>
+                                                            </div>
+                                                            <h4 style="padding-left: 10px;">Car accident
+                                                                detection function.</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tuning-topic">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div class="control-toggle">
+                                                                <input type="checkbox" id="area1-broken-toggly" checked>
+                                                                <label for="area1-broken-toggly" class="toggly-label"><i
+                                                                        class="toggly-indicator"></i></label>
+                                                            </div>
+                                                            <h4 style="padding-left: 10px;">Car broken
+                                                                detection function.</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tuning-topic">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div class="control-toggle">
+                                                                <input type="checkbox" id="area1-stop-toggly" checked>
+                                                                <label for="area1-stop-toggly" class="toggly-label"><i
+                                                                        class="toggly-indicator"></i></label>
+                                                            </div>
+                                                            <h4 style="padding-left: 10px;">Car stop
+                                                                detection function.</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tuning-topic">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div class="control-toggle">
+                                                                <input type="checkbox" id="area1-block-toggly" checked>
+                                                                <label for="area1-block-toggly" class="toggly-label"><i
+                                                                        class="toggly-indicator"></i></label>
+                                                            </div>
+                                                            <h4 style="padding-left: 10px;">Road block
+                                                                detection function.</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tuning-topic">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div class="control-toggle">
+                                                                <input type="checkbox" id="area1-construction-toggly"
+                                                                    checked>
+                                                                <label for="area1-construction-toggly"
+                                                                    class="toggly-label"><i
+                                                                        class="toggly-indicator"></i></label>
+                                                            </div>
+                                                            <h4 style="padding-left: 10px;">Road construction
+                                                                detection function.</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Incident detection in arae 2 -->
+                                                <div id="area2-incidents" class="control-panel" style="display:none;">
+                                                    <p id="area2-incidents-caption">Enable function for area 2
+                                                    </p>
+                                                    <div class="control-toggle">
+                                                        <input type="checkbox" id="area2-incidents-toggly">
+                                                        <label for="area2-incidents-toggly" class="toggly-label"><i
+                                                                class="toggly-indicator"></i></label>
+                                                    </div>
+                                                </div>
+                                                <div id="area2-incidents-tuning" style="display:none;">
+                                                    <p class="tuning-topic">Adjust detection time in seconds.</p>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="incidents2" type="range" min="0" max="60"
+                                                                value="30" step="1" />
+                                                            <input id="incidents2" type="text" value="30" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="tuning-topic">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div class="control-toggle">
+                                                                <input type="checkbox" id="area2-accident-toggly"
+                                                                    checked>
+                                                                <label for="area2-accident-toggly"
+                                                                    class="toggly-label"><i
+                                                                        class="toggly-indicator"></i></label>
+                                                            </div>
+                                                            <h4 style="padding-left: 10px;">Car accident
+                                                                detection function.</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tuning-topic">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div class="control-toggle">
+                                                                <input type="checkbox" id="area2-broken-toggly" checked>
+                                                                <label for="area2-broken-toggly" class="toggly-label"><i
+                                                                        class="toggly-indicator"></i></label>
+                                                            </div>
+                                                            <h4 style="padding-left: 10px;">Car broken
+                                                                detection function.</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tuning-topic">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div class="control-toggle">
+                                                                <input type="checkbox" id="area2-stop-toggly" checked>
+                                                                <label for="area2-stop-toggly" class="toggly-label"><i
+                                                                        class="toggly-indicator"></i></label>
+                                                            </div>
+                                                            <h4 style="padding-left: 10px;">Car stop
+                                                                detection function.</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tuning-topic">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div class="control-toggle">
+                                                                <input type="checkbox" id="area2-block-toggly" checked>
+                                                                <label for="area2-block-toggly" class="toggly-label"><i
+                                                                        class="toggly-indicator"></i></label>
+                                                            </div>
+                                                            <h4 style="padding-left: 10px;">Road block
+                                                                detection function.</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tuning-topic">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div class="control-toggle">
+                                                                <input type="checkbox" id="area2-construction-toggly"
+                                                                    checked>
+                                                                <label for="area2-construction-toggly"
+                                                                    class="toggly-label"><i
+                                                                        class="toggly-indicator"></i></label>
+                                                            </div>
+                                                            <h4 style="padding-left: 10px;">Road construction
+                                                                detection function.</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Wrong-way detection -->
+                                        <div id="wrong-way" class="cyber-panel" style="display:none;">
+                                            <div class="header-panel">
+                                                WRONG_WAY_DETECTION
+                                                <span style="display:flex;">
+                                                    <div id="area1-wrongway-status-dot" class="status-dot" hidden>
+                                                    </div>
+                                                    <div id="area2-wrongway-status-dot" class="status-dot"
+                                                        style="margin-left: 20px;" hidden></div>
+                                                </span>
+                                            </div>
+                                            <div class="content-panel">
+                                                <div class="topic-panel">
+                                                    <h4>Enable the function to detect wrong-way drivers.</h4>
+                                                </div>
+
+                                                <!-- Wrong-way detection with crossline 1 -->
+                                                <div id="area1-wrongway" class="control-panel" style="display:none;">
+                                                    <p id="area1-wrongway-caption">Enable function for
+                                                        crossline 1</p>
+                                                    <div class="control-toggle">
+                                                        <input type="checkbox" id="area1-wrongway-toggly">
+                                                        <label for="area1-wrongway-toggly" class="toggly-label"><i
+                                                                class="toggly-indicator"></i></label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Wrong-way detection with crossline 2 -->
+                                                <div id="area2-wrongway" class="control-panel" style="display:none;">
+                                                    <p id="area2-wrongway-caption">Enable function for
+                                                        crossline 2</p>
+                                                    <div class="control-toggle">
+                                                        <input type="checkbox" id="area2-wrongway-toggly">
+                                                        <label for="area2-wrongway-toggly" class="toggly-label"><i
+                                                                class="toggly-indicator"></i></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Truck-right detection -->
+                                        <div id="truck-right" class="cyber-panel" style="display:none;">
+                                            <div class="header-panel">
+                                                TRUCK_IN_THE_RIGHT_LANE_DETECTION
+                                                <span style="display:flex;">
+                                                    <div id="area1-truckright-status-dot" class="status-dot" hidden>
+                                                    </div>
+                                                    <div id="area2-truckright-status-dot" class="status-dot"
+                                                        style="margin-left: 20px;" hidden></div>
+                                                </span>
+                                            </div>
+                                            <div class="content-panel">
+                                                <div class="topic-panel">
+                                                    <h4>Enable the function to detect trucks in the right lane.</h4>
+                                                </div>
+
+                                                <!-- Truck-right detection with crossline 1 -->
+                                                <div id="area1-truckright" class="control-panel" style="display:none;">
+                                                    <p id="area1-truckright-caption">Enable function for
+                                                        crossline 1</p>
+                                                    <div class="control-toggle">
+                                                        <input type="checkbox" id="area1-truckright-toggly">
+                                                        <label for="area1-truckright-toggly" class="toggly-label"><i
+                                                                class="toggly-indicator"></i></label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Truck-right detection with crossline 2 -->
+                                                <div id="area2-truckright" class="control-panel" style="display:none;">
+                                                    <p id="area2-truckright-caption">Enable function for
+                                                        crossline 2</p>
+                                                    <div class="control-toggle">
+                                                        <input type="checkbox" id="area2-truckright-toggly">
+                                                        <label for="area2-truckright-toggly" class="toggly-label"><i
+                                                                class="toggly-indicator"></i></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Over-speed detection -->
+                                        <div id="over-speed" class="cyber-panel" style="display:none;">
+                                            <div class="header-panel">
+                                                OVER_SPEED_DETECTION
+                                                <span style="display:flex;">
+                                                    <div id="area1-overspeed-status-dot" class="status-dot" hidden>
+                                                    </div>
+                                                    <div id="area2-overspeed-status-dot" class="status-dot"
+                                                        style="margin-left: 20px;" hidden></div>
+                                                </span>
+                                            </div>
+                                            <div class="content-panel">
+                                                <div class="topic-panel">
+                                                    <h4>Enable the function to detect over speed.</h4>
+                                                </div>
+
+                                                <!-- Over-speed detection with crossline 1 -->
+                                                <div id="area1-overspeed" class="control-panel" style="display:none;">
+                                                    <p id="area1-overspeed-caption">Enable function for
+                                                        crossline 1</p>
+                                                    <div class="control-toggle">
+                                                        <input type="checkbox" id="area1-overspeed-toggly">
+                                                        <label for="area1-overspeed-toggly" class="toggly-label"><i
+                                                                class="toggly-indicator"></i></label>
+                                                    </div>
+                                                </div>
+                                                <div id="area1-overspeed-tuning" style="display:none;">
+                                                    <p class="tuning-topic">The maximum allowed speed.</p>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="overspeed1" type="range" min="0" max="200"
+                                                                value="120" step="1" />
+                                                            <input id="overspeed1" type="text" value="120" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Over-speed detection with crossline 2 -->
+                                                <div id="area2-overspeed" class="control-panel" style="display:none;">
+                                                    <p id="area2-overspeed-caption">Enable function for
+                                                        crossline 2</p>
+                                                    <div class="control-toggle">
+                                                        <input type="checkbox" id="area2-overspeed-toggly">
+                                                        <label for="area2-overspeed-toggly" class="toggly-label"><i
+                                                                class="toggly-indicator"></i></label>
+                                                    </div>
+                                                </div>
+                                                <div id="area2-overspeed-tuning" style="display:none;">
+                                                    <p class="tuning-topic">The maximum allowed speed.</p>
+                                                    <div class="tuning-panel">
+                                                        <div class="tuning">
+                                                            <input id="overspeed2" type="range" min="0" max="200"
+                                                                value="120" step="1" />
+                                                            <input id="overspeed2" type="text" value="120" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Limit-speed detection -->
+                                        <div id="limit-speed" class="cyber-panel" style="display:none;">
+                                            <div class="header-panel">
+                                                LIMIT_SPEED_DETECTION
+                                                <span style="display:flex;">
+                                                    <div id="area1-limitspeed-status-dot" class="status-dot" hidden>
+                                                    </div>
+                                                    <div id="area2-limitspeed-status-dot" class="status-dot"
+                                                        style="margin-left: 20px;" hidden></div>
+                                                </span>
+                                            </div>
+                                            <div class="content-panel">
+                                                <div class="topic-panel">
+                                                    <h4>Enable the function to detect speed limits in the right
+                                                        lane.</h4>
+                                                </div>
+
+                                                <!-- Limit-speed detection with crossline 1 -->
+                                                <div id="area1-limitspeed" class="control-panel" style="display:none;">
+                                                    <p id="area1-limitspeed-caption">Enable function for
+                                                        crossline 1</p>
+                                                    <div class="control-toggle">
+                                                        <input type="checkbox" id="area1-limitspeed-toggly">
+                                                        <label for="area1-limitspeed-toggly" class="toggly-label"><i
+                                                                class="toggly-indicator"></i></label>
+                                                    </div>
+                                                </div>
+                                                <div id="area1-limitspeed-tuning" style="display:none;">
+                                                    <p class="tuning-topic">The allowed speed range is within the
+                                                        specified limits.</p>
+                                                    <div class="tuning-panel">
+                                                        <div class="double-slider-container">
+                                                            <div class="double-slider">
+                                                                <input id="area1-limitspeed-min" type="range" min="0"
+                                                                    max="200" value="90" step="1"
+                                                                    class="slider min-slider" />
+                                                                <input id="area1-limitspeed-max" type="range" min="0"
+                                                                    max="200" value="120" step="1"
+                                                                    class="slider max-slider" />
+                                                                <div class="track"></div>
+                                                                <div class="range"></div>
+                                                            </div>
+                                                            <div class="double-slider-values">
+                                                                <span style="display: flex; align-items: center;">
+                                                                    <input id="area1-limitspeed-min-text" type="text"
+                                                                        value="90" />
+                                                                    <p style="padding: 0 10px;">Min</p>
+                                                                </span>
+                                                                <span style="display: flex; align-items: center;">
+                                                                    <p style="padding: 0 10px;">Max</p>
+                                                                    <input id="area1-limitspeed-max-text" type="text"
+                                                                        value="120" />
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Limit-speed detection with crossline 2 -->
+                                                <div id="area2-limitspeed" class="control-panel" style="display:none;">
+                                                    <p id="area2-limitspeed-caption">Enable function for
+                                                        crossline 2</p>
+                                                    <div class="control-toggle">
+                                                        <input type="checkbox" id="area2-limitspeed-toggly">
+                                                        <label for="area2-limitspeed-toggly" class="toggly-label"><i
+                                                                class="toggly-indicator"></i></label>
+                                                    </div>
+                                                </div>
+                                                <div id="area2-limitspeed-tuning" style="display:none;">
+                                                    <p class="tuning-topic">The allowed speed range is within the
+                                                        specified limits.</p>
+                                                    <div class="tuning-panel">
+                                                        <div class="double-slider-container">
+                                                            <div class="double-slider">
+                                                                <input id="area2-limitspeed-min" type="range" min="0"
+                                                                    max="200" value="90" step="1"
+                                                                    class="slider min-slider" />
+                                                                <input id="area2-limitspeed-max" type="range" min="0"
+                                                                    max="200" value="120" step="1"
+                                                                    class="slider max-slider" />
+                                                                <div class="track"></div>
+                                                                <div class="range"></div>
+                                                            </div>
+                                                            <div class="double-slider-values">
+                                                                <span style="display: flex; align-items: center;">
+                                                                    <input id="area2-limitspeed-min-text" type="text"
+                                                                        value="90" />
+                                                                    <p style="padding: 0 10px;">Min</p>
+                                                                </span>
+                                                                <span style="display: flex; align-items: center;">
+                                                                    <p style="padding: 0 10px;">Max</p>
+                                                                    <input id="area2-limitspeed-max-text" type="text"
+                                                                        value="120" />
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Footer Section -->
+            <footer class="grid footer">
+                <p>COPYRIGHT &copy; 2025 <a href="https://www.enixma.net/" rel="noopener" target="_blank"
+                        class="">ENIXMA Global</a>. All Rights Reserved.</p>
+                <div id="display-pcu" style="display: flex;">
+                    <p>Displays the value as PCU.</p>
+                    <div class="control-toggle">
+                        <input type="checkbox" id="display-pcu-toggly">
+                        <label for="display-pcu-toggly" class="toggly-label"><i class="toggly-indicator"></i></label>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./scripts/jquery-3.7.0.min.js"></script>
+    <!-- Add these temporarily to check if files are accessible -->
+    <script type="module" src="./scripts/modules/config.js"></script>
+    <script type="module" src="./scripts/modules/polygonManager.js"></script>
+    <script type="module" src="./scripts/modules/crosslineManager.js"></script>
+    <script type="module" src="./scripts/modules/videoManager.js"></script>
+    <script type="module" src="./scripts/modules/sliderManager.js"></script>
+    <script type="module" src="./scripts/modules/toggleManager.js"></script>
+    <script type="module" src="./scripts/modules/chartManager.js"></script>
+    <script type="module" src="./scripts/app.js"></script>
+</body>
+
+</html>
