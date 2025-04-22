@@ -18,7 +18,7 @@
             "runOptions": "/usr/local/packages/enixma_analytic/model/day_model.tflite /usr/local/packages/enixma_analytic/model/night_model.tflite 300 300 80 1024 768 15 /usr/local/packages/enixma_analytic/label/labels.txt -c axis-a8-dlpu-tflite",
             "vendorUrl": "https://www.axis.com",
             "runMode": "never",
-            "version": "1.0.0"
+            "version": "25.4.16"
         },
         "configuration": {
             "settingPage": "index.html",
