@@ -4,7 +4,8 @@
         "dbus": {
             "requiredMethods": [
                 "com.axis.Graphics2.*",
-                "com.axis.Overlay2.*"
+                "com.axis.Overlay2.*",
+                "com.axis.HTTPConf1.VAPIXServiceAccounts1.GetCredentials"
             ]
         }
     },

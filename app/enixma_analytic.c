@@ -9,6 +9,9 @@
 
 #include <glib.h>
 
+#include <curl/curl.h>
+#include <gio/gio.h>
+
 #include "overlay.h"
 #include "detection.h"
 #include "deepsort.h"
@@ -419,10 +422,10 @@ static void render_overlay_cb(gpointer rendering_context,
         draw_transparent(rendering_context, 0, 0, stream->width, stream->height);
         //  Draw polygons
         draw_roi_polygon(rendering_context, stream->width, stream->height, 3.0);
-        //  Show text in black
-        draw_label(rendering_context, stream->width, stream->height);
         //  Draw crosslines
         draw_counting_line(rendering_context, stream->width, stream->height, 3.0, counting_system);
+        //  Draw label
+        draw_label(rendering_context, stream->width, stream->height);
         // draw_text(rendering_context, stream->width / 2, stream->height / 2);
         draw_count(rendering_context, stream->width, stream->height, 3.0);
     }
@@ -1147,6 +1150,8 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+
     // Initialize global ROI
     roi1 = init_polygon(MAX_POLYGON_POINTS);
     roi2 = init_polygon(MAX_POLYGON_POINTS);
@@ -1253,6 +1258,7 @@ int main(int argc, char **argv)
     free_tracker(tracker);
     free_counting_system(counting_system);
     cleanup_vehicle_icons();
+    curl_global_cleanup();
 
     syslog(LOG_INFO, "Stop streaming video from VDO");
     if (!stopFrameFetch(context.providers.sdImageProvider))

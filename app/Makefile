@@ -5,7 +5,7 @@ LIBDIR = lib
 LIBJPEG_TURBO = /opt/build/libjpeg-turbo/build
 URIPARSER = /opt/build/uriparser/build
 
-PKGS = gio-2.0 gio-unix-2.0 liblarod vdostream glib-2.0 cairo fcgi jansson axevent
+PKGS = gio-2.0 gio-unix-2.0 liblarod vdostream glib-2.0 cairo fcgi jansson axevent libcurl
 
 CFLAGS += -I$(LIBJPEG_TURBO)/include -I$(URIPARSER)/include -DLAROD_API_VERSION_3
 LDLIBS += -ljpeg -luriparser

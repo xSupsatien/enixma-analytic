@@ -1637,7 +1637,7 @@ bool load_chart_data(const char *filename, int *chart_data, int array_size)
 
     if (!root)
     {
-        syslog(LOG_ERR, "Failed to load chart data from %s: %s", filename, error.text);
+        // syslog(LOG_ERR, "Failed to load chart data from %s: %s", filename, error.text);
         return false;
     }
 
@@ -1690,7 +1690,7 @@ bool load_chart_data_double(const char *filename, double *chart_data, int array_
 
     if (!root)
     {
-        syslog(LOG_ERR, "Failed to load chart data from %s: %s", filename, error.text);
+        // syslog(LOG_ERR, "Failed to load chart data from %s: %s", filename, error.text);
         return false;
     }
 
