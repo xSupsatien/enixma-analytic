@@ -401,9 +401,7 @@ static void render_overlay_cb(gpointer rendering_context,
     // syslog(LOG_INFO, "Render callback for overlay: %i x %i", overlay_width, overlay_height);
     // syslog(LOG_INFO, "Render callback for stream: %i x %i", stream->width, stream->height);
 
-    if (!roi1 || !roi2)
-    {
-        // syslog(LOG_INFO, "ROI is NULL");
+    if (!roi1 || !roi2 || stream->width != 1024 || stream->height != 768) {
         return;
     }
 
