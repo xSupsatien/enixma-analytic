@@ -78,9 +78,9 @@ bool is_too_close_to_existing_events(EventType type, float cx, float cy, int roi
 void store_event_location(int object_id, TrackedObject* obj, EventType type, int roi_index);
 
 // Set the class IDs based on your model's class mapping
-#define BIKE_CLASS_ID 1
-#define PERSON_CLASS_ID 7
-#define CONE_CLASS_ID 8
+#define BIKE_CLASS_ID 2
+#define PERSON_CLASS_ID 8
+#define CONE_CLASS_ID 9
 
 // Global event system state
 extern Event event_list[MAX_EVENTS];

@@ -295,14 +295,14 @@ void reset_object_timer(TrackedObject *obj)
 bool is_vehicle(int class_id)
 {
     // Check if the class ID matches any of the vehicle types
-    return (class_id == 0 || // car
-            class_id == 1 || // bike
-            class_id == 2 || // truck
-            class_id == 3 || // bus
-            class_id == 4 || // taxi
-            class_id == 5 || // pickup
-            class_id == 6);  // trailer
-                             // Not vehicles: 7 (person), 8 (cone)
+    return (class_id == 1 || // car
+            class_id == 2 || // bike
+            class_id == 3 || // truck
+            class_id == 4 || // bus
+            class_id == 5 || // taxi
+            class_id == 6 || // pickup
+            class_id == 7);  // trailer
+                             // Not vehicles: 8 (person), 9 (cone)
 }
 
 // Function to calculate distance between objects (normalized 0-1 coordinates)
