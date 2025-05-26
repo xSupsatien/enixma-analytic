@@ -622,10 +622,8 @@ void process_events(Tracker *tracker)
     {
         TrackedObject *obj = &tracker->objects[i];
 
-        // Skip if object is a cone or person or doesn't meet minimum hits
-        if (obj->class_id == CONE_CLASS_ID ||
-            obj->class_id == PERSON_CLASS_ID ||
-            obj->hits < tracker->min_hits)
+        // Skip if object is a person or doesn't meet minimum hits
+        if (obj->class_id == PERSON_CLASS_ID || obj->hits < tracker->min_hits)
         {
             continue;
         }
